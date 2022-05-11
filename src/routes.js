@@ -5,41 +5,37 @@ window.jQuery = $;
 window.$ = $;
 global.jQuery = $;
 
-const DashboardDefault = React.lazy(() => import('./Demo/Dashboard/Default'));
+const DashboardDefault = React.lazy(() => import('./Page/Dashboard/Default'));
 
-const UIBasicButton = React.lazy(() => import('./Demo/UIElements/Basic/Button'));
-const UIBasicBadges = React.lazy(() => import('./Demo/UIElements/Basic/Badges'));
-const UIBasicBreadcrumbPagination = React.lazy(() => import('./Demo/UIElements/Basic/BreadcrumbPagination'));
+const Manpower_Main = React.lazy(() => import('./Page/UIElements/Recuite/manpowermain'));
+const Manpower_Dept = React.lazy(() => import('./Page/UIElements/Recuite/manpowerdept'));
+const Manpower_Dept_Detail = React.lazy(() => import('./Page/UIElements/Recuite/manpowerdeptdetail'));
 
-const UIBasicCollapse = React.lazy(() => import('./Demo/UIElements/Basic/Collapse'));
-const UIBasicTabsPills = React.lazy(() => import('./Demo/UIElements/Basic/TabsPills'));
-const UIBasicBasicTypography = React.lazy(() => import('./Demo/UIElements/Basic/Typography'));
+const Candidate_Main = React.lazy(() => import('./Page/UIElements/Recuite/candidatemain'));
+const Candidate_Dept = React.lazy(() => import('./Page/UIElements/Recuite/candidatedept'));
+const Candidate_Dept_Detail = React.lazy(() => import('./Page/UIElements/Recuite/candidatedeptdetail'));
 
-const FormsElements = React.lazy(() => import('./Demo/Forms/FormsElements'));
+const Register_Main = React.lazy(() => import('./Page/UIElements/Recuite/registermain'));
 
-const BootstrapTable = React.lazy(() => import('./Demo/Tables/BootstrapTable'));
+const Request_Main = React.lazy(() => import('./Page/UIElements/Recuite/mgrrequest'));
+const PD_Main = React.lazy(() => import('./Page/UIElements/Recuite/pdmain'));
 
-const Nvd3Chart = React.lazy(() => import('./Demo/Charts/Nvd3Chart/index'));
+const Profilepage = React.lazy(() => import('./Page/Profile/Profile'));
 
-const GoogleMap = React.lazy(() => import('./Demo/Maps/GoogleMap/index'));
-
-const OtherSamplePage = React.lazy(() => import('./Demo/Other/SamplePage'));
-const OtherDocs = React.lazy(() => import('./Demo/Other/Docs'));
 
 const routes = [
     { path: '/dashboard/default', exact: true, name: 'Default', component: DashboardDefault },
-    { path: '/basic/button', exact: true, name: 'Basic Button', component: UIBasicButton },
-    { path: '/basic/badges', exact: true, name: 'Basic Badges', component: UIBasicBadges },
-    { path: '/basic/breadcrumb-paging', exact: true, name: 'Basic Breadcrumb Pagination', component: UIBasicBreadcrumbPagination },
-    { path: '/basic/collapse', exact: true, name: 'Basic Collapse', component: UIBasicCollapse },
-    { path: '/basic/tabs-pills', exact: true, name: 'Basic Tabs & Pills', component: UIBasicTabsPills },
-    { path: '/basic/typography', exact: true, name: 'Basic Typography', component: UIBasicBasicTypography },
-    { path: '/forms/form-basic', exact: true, name: 'Forms Elements', component: FormsElements },
-    { path: '/tables/bootstrap', exact: true, name: 'Bootstrap Table', component: BootstrapTable },
-    { path: '/charts/nvd3', exact: true, name: 'Nvd3 Chart', component: Nvd3Chart },
-    { path: '/maps/google-map', exact: true, name: 'Google Map', component: GoogleMap },
-    { path: '/sample-page', exact: true, name: 'Sample Page', component: OtherSamplePage },
-    { path: '/docs', exact: true, name: 'Documentation', component: OtherDocs },
+    { path: '/manpower/main', exact: true, name: 'Manpower Main', component: Manpower_Main },
+    { path: '/manpower/main/dept/:Dept', exact: true, name: 'Manpower Dept', component: Manpower_Dept },
+    { path: '/manpower/main/dept/detail/:Dept/:Position', exact: true, name: 'Manpower Dept Detail', component: Manpower_Dept_Detail },
+    { path: '/candidate/main', exact: true, name: 'Basic Badges', component: Candidate_Main },
+    { path: '/candidate/dept/:Dept', exact: true, name: 'Basic Badges', component: Candidate_Dept },
+    { path: '/candidate/dept/detail/:Dept/:Position', exact: true, name: 'Basic Badges', component: Candidate_Dept_Detail },
+    { path: '/register/main', exact: true, name: 'Register', component: Register_Main },
+    { path: '/register/main/:Id', exact: true, name: 'Register Action', component: Register_Main },
+    { path: '/pd/main', exact: true, name: 'PD Main', component: PD_Main },
+    { path: '/request/main', exact: true, name: 'Request Main', component: Request_Main },
+    { path: '/profile', exact: true, name: 'Default', component: Profilepage }
 ];
 
 export default routes;

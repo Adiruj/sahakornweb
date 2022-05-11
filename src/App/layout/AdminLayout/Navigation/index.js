@@ -9,6 +9,7 @@ import OutsideClick from './OutsideClick';
 import Aux from './../../../../hoc/_Aux'
 import * as actionTypes from './../../../../store/actions';
 import navigation from '../../../../menu-items';
+import NavItem from './NavContent/NavItem';
 
 class Navigation extends Component {
 

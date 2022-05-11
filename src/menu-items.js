@@ -2,7 +2,7 @@ export default {
     items: [
         {
             id: 'navigation',
-            title: 'Navigation',
+            title: 'Main Dashboard',
             type: 'group',
             icon: 'icon-navigation',
             children: [
@@ -17,219 +17,108 @@ export default {
         },
         {
             id: 'ui-element',
-            title: 'UI ELEMENT',
+            title: 'Application',
             type: 'group',
             icon: 'icon-ui',
             children: [
                 {
-                    id: 'basic',
-                    title: 'Component',
+                    id: 'app1',
+                    title: 'Recruitment & Selection',
                     type: 'collapse',
-                    icon: 'feather icon-box',
+                    icon: 'feather icon-search',
                     children: [
                         {
-                            id: 'button',
-                            title: 'Button',
+                            id: 'Register-page',
+                            title: 'Register',
                             type: 'item',
-                            url: '/basic/button'
+                            url: '/register/main'
                         },
                         {
-                            id: 'badges',
-                            title: 'Badges',
+                            id: 'PD-page',
+                            title: 'PD Approve',
                             type: 'item',
-                            url: '/basic/badges'
+                            url: '/PD/main'
                         },
                         {
-                            id: 'breadcrumb-pagination',
-                            title: 'Breadcrumb & Pagination',
+                            id: 'Request-page',
+                            title: 'Request Manpower',
                             type: 'item',
-                            url: '/basic/breadcrumb-paging'
+                            url: '/request/main'
                         },
                         {
-                            id: 'collapse',
-                            title: 'Collapse',
+                            id: 'Manpower-page',
+                            title: 'Manpower',
                             type: 'item',
-                            url: '/basic/collapse'
+                            url: '/manpower/main'
                         },
                         {
-                            id: 'tabs-pills',
-                            title: 'Tabs & Pills',
+                            id: 'Candidate-page',
+                            title: 'Candidate',
                             type: 'item',
-                            url: '/basic/tabs-pills'
-                        },
-                        {
-                            id: 'typography',
-                            title: 'Typography',
-                            type: 'item',
-                            url: '/basic/typography'
+                            url: '/candidate/main'
                         }
                     ]
-                }
-            ]
-        },
-        {
-            id: 'ui-forms',
-            title: 'Forms & Tables',
-            type: 'group',
-            icon: 'icon-group',
-            children: [
-                {
-                    id: 'form-basic',
-                    title: 'Form Elements',
-                    type: 'item',
-                    url: '/forms/form-basic',
-                    icon: 'feather icon-file-text'
                 },
                 {
-                    id: 'bootstrap',
-                    title: 'Table',
+                    id: 'app2',
+                    title: 'Traning & Development',
                     type: 'item',
-                    icon: 'feather icon-server',
-                    url: '/tables/bootstrap'
-                }
-            ]
-        },
-        {
-            id: 'chart-maps',
-            title: 'Chart & Maps',
-            type: 'group',
-            icon: 'icon-charts',
-            children: [
-                {
-                    id: 'charts',
-                    title: 'Charts',
-                    type: 'item',
-                    icon: 'feather icon-pie-chart',
-                    url: '/charts/nvd3'
+                    icon: 'feather icon-trending-up',
+                    url: '#'
                 },
                 {
-                    id: 'maps',
-                    title: 'Map',
+                    id: 'app3',
+                    title: 'Compensation & Benefit',
                     type: 'item',
-                    icon: 'feather icon-map',
-                    url: '/maps/google-map'
+                    icon: 'feather icon-credit-card',
+                    url: '#'
+                },
+                {
+                    id: 'app4',
+                    title: 'Employment & Relation',
+                    type: 'item',
+                    icon: 'feather icon-users',
+                    url: '#'
                 }
             ]
         },
         {
             id: 'pages',
-            title: 'Pages',
+            title: 'Setting',
             type: 'group',
             icon: 'icon-pages',
             children: [
                 {
-                    id: 'auth',
-                    title: 'Authentication',
-                    type: 'collapse',
-                    icon: 'feather icon-lock',
-                    badge: {
-                        title: 'New',
-                        type: 'label-danger'
-                    },
-                    children: [
-                        {
-                            id: 'signup-1',
-                            title: 'Sign up',
-                            type: 'item',
-                            url: '/auth/signup-1',
-                            target: true,
-                            breadcrumbs: false
-                        },
-                        {
-                            id: 'signin-1',
-                            title: 'Sign in',
-                            type: 'item',
-                            url: '/auth/signin-1',
-                            target: true,
-                            breadcrumbs: false
-                        }
-                    ]
-                },
-
-                {
-                    id: 'sample-page',
-                    title: 'Sample Page',
+                    id: 'setting',
+                    title: 'Setting',
                     type: 'item',
-                    url: '/sample-page',
+                    url: '/basic/tabs-pills',
+                    icon: 'feather icon-settings',
+                },
+                {
+                    id: 'Profile-page',
+                    title: 'Profile',
+                    type: 'item',
+                    url: '/profile',
                     classes: 'nav-item',
-                    icon: 'feather icon-sidebar'
+                    icon: 'feather icon-user'
                 },
                 {
                     id: 'docs',
-                    title: 'Documentation',
+                    title: 'About',
                     type: 'item',
                     url: '/docs',
                     classes: 'nav-item',
                     icon: 'feather icon-help-circle'
                 },
                 {
-                    id: 'menu-level',
-                    title: 'Menu Levels',
-                    type: 'collapse',
-                    icon: 'feather icon-menu',
-                    children: [
-                        {
-                            id: 'menu-level-1.1',
-                            title: 'Menu Level 1.1',
-                            type: 'item',
-                            url: '#!',
-                        },
-                        {
-                            id: 'menu-level-1.2',
-                            title: 'Menu Level 2.2',
-                            type: 'collapse',
-                            children: [
-                                {
-                                    id: 'menu-level-2.1',
-                                    title: 'Menu Level 2.1',
-                                    type: 'item',
-                                    url: '#',
-                                },
-                                {
-                                    id: 'menu-level-2.2',
-                                    title: 'Menu Level 2.2',
-                                    type: 'collapse',
-                                    children: [
-                                        {
-                                            id: 'menu-level-3.1',
-                                            title: 'Menu Level 3.1',
-                                            type: 'item',
-                                            url: '#',
-                                        },
-                                        {
-                                            id: 'menu-level-3.2',
-                                            title: 'Menu Level 3.2',
-                                            type: 'item',
-                                            url: '#',
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    id: 'disabled-menu',
-                    title: 'Disabled Menu',
+                    id: 'logout-menu',
+                    title: 'Logout',
                     type: 'item',
-                    url: '#',
-                    classes: 'nav-item disabled',
-                    icon: 'feather icon-power'
-                },
-                /*{
-                    id: 'buy-now',
-                    title: 'Buy Now',
-                    type: 'item',
-                    icon: 'feather icon-user',
+                    url: '/auth/signout',
                     classes: 'nav-item',
-                    url: 'https://codedthemes.com',
-                    target: true,
-                    external: true,
-                    badge: {
-                        title: 'v1.0',
-                        type: 'label-primary'
-                    }
-                }*/
+                    icon: 'feather icon-log-out',
+                },
             ]
         }
     ]
