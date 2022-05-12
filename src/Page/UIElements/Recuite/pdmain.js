@@ -16,6 +16,7 @@ const Code_storage = window.localStorage.getItem("Code");
 const FormsElements = () => {
     
     const [ReqBy , setReqBy] = useState([]);
+    const [ApproveBy , setApproveBy] = useState([]);
     const [Dept , setDeptsel] = useState([]);
     const [Position , setPositionsel] = useState([]);
     const [Level , setLevelsel] = useState([]);
@@ -31,7 +32,7 @@ const FormsElements = () => {
     const [datadept4,setdatadept4] = useState([]);
 
     const [show, setShow] = useState(false);
-    const [idAprrove,setidAprrove] = useState([]);
+    const [Id,setidAprrove] = useState([]);
     const [DeptAprrove,setDeptAprrove] = useState([]); 
     const [PositionAprrove,setPositionAprrove] = useState([]); 
     const [LevelAprrove,setLevelAprrove] = useState([]); 
@@ -175,34 +176,32 @@ const FormsElements = () => {
         .catch(Error => console.log(Error))
     }
 
-    /// POST New register
-    async function postrequest (requestdata) {
-        return fetch('http://13.250.116.42/node/express/api/pd/postpd/request', {
-        method: 'POST',
+    /// PUT Approve
+    async function putrequest (requestdata) {
+        return fetch('http://13.250.116.42/node/express/api/pd/putpd/request/', {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'authorization': ID_Token
             },
-            body: JSON.stringify(requestdata)
+            body: JSON.stringify(requestdata) 
         })
         .then(data => data.json())
         .catch(err => console.log(err))
     }
 
-    const handleSubmit = async () => {
+    const handleApprove = async () => {
         let newDate = new Date()
         let date = newDate.getDate();
         let month = newDate.getMonth() + 1;
         let year = newDate.getFullYear();
         var Date_Now = date+'/'+month+'/'+year;
 
-        const respone = await postrequest({
-            Dept,
-            Position,
-            Level,
-            ReqBy,
+        const respone = await putrequest({
+            Id,
+            ApproveBy,
             Date_Now,
-            totalRequest
+            ReqTotalAprrove
         })
 
         if('protocol41' in respone === true){
@@ -223,6 +222,7 @@ const FormsElements = () => {
         getdatadept4();
         setReqBy(Code_storage)
         setDeptsel(Department_storage)
+        setApproveBy(Code_storage)
     },[])
 
     //delete Request from db
@@ -243,27 +243,7 @@ const FormsElements = () => {
             }
     }
 
-    //delete register from db
-    const handleDelregister = async (delId,delIndex,e) => {
-            const res = await fetch('http://13.250.116.42/node/express/api/register/delregister/'+delId, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': ID_Token
-                },
-            })
-            .then(data => data.json())
 
-            if('protocol41' in res === true){
-                setdataRegisterall(dataRegisterall.filter((val, i) => i !== delIndex));
-                alert('ลบข้อมูลสำเร็จ')
-            }
-    }
-
-    // Accept Regsiter
-    const handleSubmitregister = async (AcceptId,AcceptIndex,e) => {
-        
-    }
     console.log(dataRequestall)
     return (
             <Aux>
@@ -283,6 +263,8 @@ const FormsElements = () => {
                                             <th>Request By</th>
                                             <th>Request Date</th>
                                             <th>Request Total</th>
+                                            <th>Approve By</th>
+                                            <th>Approve Date</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -297,10 +279,12 @@ const FormsElements = () => {
                                                 <td>{val.ReqBy}</td>
                                                 <td>{val.ReqDate}</td>
                                                 <td>{val.Total}</td>
+                                                <td>{val.ApproveBy}</td>
+                                                <td>{val.ApproveDate}</td>
                                                 <td>{val.Status}</td>
                                                 <td>
                                                     <Button onClick={(e) => handleShow(val.Id,val.Department,val.Position,val.Level,val.ReqBy,val.ReqDate,val.Total)} className="btn btn-success">Approve</Button>
-                                                    <Button className="btn btn-danger" onClick={(e) => handleDel(val.Id,index,e)}>Del</Button>
+                                                    <Button className="btn btn-danger" onClick={(e) => handleDel(val.Id,index,e)}>Reject</Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -312,37 +296,57 @@ const FormsElements = () => {
                                 </Modal.Header>
                                 <Modal.Body>
                                     <Form>
-                                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                            <Form.Label>Department</Form.Label>
-                                            <Form.Control type="input" value={DeptAprrove} disabled autoFocus/>
-                                        </Form.Group>
-                                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
-                                            <Form.Label>Position</Form.Label>
-                                            <Form.Control type="input" value={PositionAprrove} disabled autoFocus/>
-                                        </Form.Group>
-                                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
-                                            <Form.Label>Level</Form.Label>
-                                            <Form.Control type="input" value={LevelAprrove} disabled autoFocus/>
-                                        </Form.Group>
-                                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
-                                            <Form.Label>Request By</Form.Label>
-                                            <Form.Control type="input" value={ReqByAprrove} disabled autoFocus/>
-                                        </Form.Group>
-                                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
-                                            <Form.Label>Request Date</Form.Label>
-                                            <Form.Control type="input" value={ReqDateAprrove} disabled autoFocus/>
-                                        </Form.Group>
-                                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
-                                            <Form.Label>Request Total</Form.Label>
-                                            <Form.Control type="input" value={ReqTotalAprrove} autoFocus/>
-                                        </Form.Group>
+                                        <Row>
+                                            <Col>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                                    <Form.Label>Department</Form.Label>
+                                                    <Form.Control type="input" value={DeptAprrove} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+                                                    <Form.Label>Position</Form.Label>
+                                                    <Form.Control type="input" value={PositionAprrove} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+                                                    <Form.Label>Level</Form.Label>
+                                                    <Form.Control type="input" value={LevelAprrove} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+                                                    <Form.Label>Request By</Form.Label>
+                                                    <Form.Control type="input" value={ReqByAprrove} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+                                                    <Form.Label>Request Date</Form.Label>
+                                                    <Form.Control type="input" value={ReqDateAprrove} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+                                                    <Form.Label>Request Total</Form.Label>
+                                                    <Form.Control type="input" placeholder={ReqTotalAprrove} onChange={(e) => setReqTotalAprrove(e.target.value)} autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
                                     </Form>
                                 </Modal.Body>
                                 <Modal.Footer>
                                 <Button variant="secondary" onClick={handleClose}>
                                     Close
                                 </Button>
-                                <Button variant="success" onClick={handleClose}>
+                                <Button variant="success" onClick={handleApprove}>
                                     Approve
                                 </Button>
                                 </Modal.Footer>

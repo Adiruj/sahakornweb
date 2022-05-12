@@ -1,4 +1,7 @@
+import PDNotify from "../src/Notify_PD";
+
 export default {
+    
     items: [
         {
             id: 'navigation',
@@ -36,8 +39,13 @@ export default {
                         {
                             id: 'PD-page',
                             title: 'PD Approve',
+                            badge: {
+                                title: '3',
+                                type: 'label-danger'
+                            },
                             type: 'item',
                             url: '/PD/main'
+                            
                         },
                         {
                             id: 'Request-page',
