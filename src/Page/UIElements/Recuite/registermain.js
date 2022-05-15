@@ -3,6 +3,7 @@ import {Row, Col, Card, Form, Table ,Button ,Tab , Tabs} from 'react-bootstrap';
 import Aux from "../../../hoc/_Aux";
 
 const ID_Token = window.localStorage.getItem("Token");
+const Department_storage = window.localStorage.getItem("Department");
 
 const FormsElements = () => {
     const [deptlist , setdeptlist] = useState([]);
@@ -15,7 +16,7 @@ const FormsElements = () => {
     const [Level , setLevelsel] = useState([]);
     const [dataRegisterall , setdataRegisterall] = useState([]);
     const [dataRequestrall , setdataRequestrall] = useState([]);
-    //const [registerId , setregisterId] = useState([]);
+    const [approveTotal , setapproveTotal] = useState([]);
     const [fileupload , setfileupload] = useState([]);
     //const [Resumess , setfileuploadres] = useState([]);
 
@@ -63,7 +64,7 @@ const FormsElements = () => {
 
     /// Get Register All
     async function getregisterall () {
-        await fetch('http://13.250.116.42/node/express/api/register/getregister/',{
+        await fetch('http://13.250.116.42/node/express/api/candidate/getcandidate/',{
             method: 'GET',
             headers:{
                 'Content-Type': 'application/json',
@@ -89,9 +90,23 @@ const FormsElements = () => {
         .catch(err => console.log(err))
     }
 
+    /// Get PD Approve Total
+    async function getPDapproveTotal () {
+        await fetch('http://13.250.116.42/node/express/api/pd/getpd/approve/total/'+Department_storage,{
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json',
+                'authorization': ID_Token
+            }
+        })
+        .then(respones => respones.json())
+        .then(data => setapproveTotal(data))
+        .catch(err => console.log(err))
+    }
+
     /// POST New register
     async function postregister (registerdata) {
-        return fetch('http://13.250.116.42/node/express/api/register/postregister/', {
+        return fetch('http://13.250.116.42/node/express/api/candidate/postcandidate/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -157,6 +172,7 @@ const FormsElements = () => {
         getlevellist();
         getregisterall();
         getrequestall();
+        getPDapproveTotal();
     },[])
 
         return (
@@ -230,7 +246,7 @@ const FormsElements = () => {
                 <Row>
                     <Col>
                         <Tabs defaultActiveKey="Register">
-                            <Tab eventKey="Register" title="Register list">
+                            <Tab eventKey="Register" title="Candidate list">
                                 <Row>
                                     <Col md={4}>
                                         <Form.Group controlId="exampleForm.Name">

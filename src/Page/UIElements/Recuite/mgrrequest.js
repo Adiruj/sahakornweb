@@ -1,9 +1,10 @@
 import React , {useState , useEffect } from 'react';
-import {Row, Col, Card, Form, Table ,Button ,Tabs, Tab ,Badge} from 'react-bootstrap';
+import {Row, Col, Card, Form, Table ,Button ,Tabs, Tab , Modal} from 'react-bootstrap';
 import DepetmanpowerChart from "../../Charts/Recuite/Summarymanpowerchart";
 import Aux from "../../../hoc/_Aux";
 import { Link } from 'react-router-dom';
-
+import {BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 const ID_Token = window.localStorage.getItem("Token");
 const Name_storage = window.localStorage.getItem("Name");
@@ -34,7 +35,19 @@ const FormsElements = () => {
     const [datadept2,setdatadept2] = useState([]);
     const [datadept3,setdatadept3] = useState([]);
     const [datadept4,setdatadept4] = useState([]);
+    const [approveTotal , setapproveTotal] = useState([]);
     //const [Resumess , setfileuploadres] = useState([]);
+
+    const [show, setShow] = useState(false);
+    const [Id,setidAprrove] = useState([]);
+    const [DeptAprrove,setDeptAprrove] = useState([]); 
+    const [PositionAprrove,setPositionAprrove] = useState([]); 
+    const [LevelAprrove,setLevelAprrove] = useState([]); 
+    const [ReqByAprrove,setReqByAprrove] = useState([]);
+    const [ReqDateAprrove,setReqDateAprrove] = useState([]); 
+    const [ReqTotalAprrove,setReqTotalAprrove] = useState([]); 
+    const [ReqStatus,setReqStatus] = useState([]); 
+    const handleClose = () => setShow(false);
 
     /// Get Dept list
 
@@ -106,6 +119,22 @@ const FormsElements = () => {
         .then(data => setdataRequestall(data))
         .catch(err => console.log(err))
     }
+
+
+    /// Get PD Approve Total
+    async function getPDapproveTotal () {
+        await fetch('http://13.250.116.42/node/express/api/pd/getpd/approve/total/'+Department_storage,{
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json',
+                'authorization': ID_Token
+            }
+        })
+        .then(respones => respones.json())
+        .then(data => setapproveTotal(data))
+        .catch(err => console.log(err))
+    }
+
 
     async function getdatauser() {
             await fetch('http://13.250.116.42/node/express/api/profile/getprofile/dept/'+ Dept_storage,{
@@ -252,6 +281,7 @@ const FormsElements = () => {
         getdatadept2();
         getdatadept3();
         getdatadept4();
+        getPDapproveTotal();
         setReqBy(Code_storage)
         setDeptsel(Department_storage)
     },[])
@@ -291,11 +321,96 @@ const FormsElements = () => {
             }
     }
 
-    // Accept Regsiter
-    const handleSubmitregister = async (AcceptId,AcceptIndex,e) => {
-        
+    /// PUT Approve
+    async function putrequest (requestdata) {
+        return fetch('http://13.250.116.42/node/express/api/pd/putpd/request/', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': ID_Token
+            },
+            body: JSON.stringify(requestdata) 
+        })
+        .then(data => data.json())
+        .catch(err => console.log(err))
     }
+
+    const handleApprove = async () => {
+        let newDate = new Date()
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        var Date_Now = date+'/'+month+'/'+year;
+
+        const respone = await putrequest({
+            Id,
+            DeptAprrove,
+            PositionAprrove,
+            ReqByAprrove
+        })
+
+        if('protocol41' in respone === true){
+            alert('บันทึกสำเร็จ')
+            window.location.reload(false);
+        }
+    }
+
+    var dataTableRequest = dataRequestall.map(val => (
+        {
+            Id: val.Id,
+            Department: val.Department,
+            Position: val.Position,
+            Level: val.Level,
+            ReqBy: val.ReqBy,
+            ReqDate: val.ReqDate,
+            ReqTotal: val.Total,
+            ApproveBy: val.ApproveBy,
+            ApproveDate: val.ApproveDate,
+            Status: val.Status
+        }
+    ));
     
+    var dataTableUser = datauser.map(val => (
+        {
+            Id: val.Id,
+            Code: val.Code,
+            Name: val.Name,
+            Department: val.Department,
+            Position: val.Position,
+            Level: val.Level,
+            Shift: val.Shift,
+            Start_Work: val.Start_Date,
+            Birthday: val.Birthday
+        }
+    ));
+
+    var options = {
+        defaultSortName: 'Status',  // default sort column name
+        defaultSortOrder: 'desc', // default sort order
+        onRowClick: function(row){
+            console.log(row)
+            setidAprrove(row.Id);
+            setDeptAprrove(row.Department);
+            setPositionAprrove(row.Position)
+            setReqByAprrove(row.ReqBy);
+            setLevelAprrove(row.Level);
+            setReqDateAprrove(row.ReqDate);
+            setReqTotalAprrove(row.ReqTotal);
+            setReqStatus(row.Status)
+            setShow(true);
+        }
+    }
+
+    const BTApprove = () => {
+        return (
+            <div>
+                <Button className="btn btn-info">
+                    Detail
+                </Button>
+            </div>
+        )
+    }
+
     return (
             <Aux>
                 <Row>
@@ -362,39 +477,83 @@ const FormsElements = () => {
                     <hr/>
                         <Tabs defaultActiveKey="Request">
                             <Tab eventKey="Request" title="Request list">
-                                <Table responsive hover>
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th>#</th>
-                                            <th>Department</th>
-                                            <th>Position</th>
-                                            <th>Level</th>
-                                            <th>Request By</th>
-                                            <th>Request Date</th>
-                                            <th>Request Total</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {dataRequestall.map((val,index) => (
-                                            <tr class="text-center">
-                                                <th scope="row" key={val.Id}>{val.Datacnt}</th>
-                                                <td>{val.Department}</td>
-                                                <td>{val.Position}</td>
-                                                <td>{val.Level}</td>
-                                                <td>{val.ReqBy}</td>
-                                                <td>{val.ReqDate}</td>
-                                                <td>{val.Total}</td>
-                                                <td>{val.Status}</td>
-                                                <td>
-                                                    <Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-info">Edit</Link>
-                                                    <Button className="btn btn-danger" onClick={(e) => handleDel(val.Id,index,e)}>Del</Button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
+                            <BootstrapTable data={dataTableRequest} options={options} striped hover pagination exportCSV search>
+                                    <TableHeaderColumn hidden dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='ReqBy' dataSort={ true } headerAlign='center' dataAlign='center'>Request By</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='ReqTotal' dataSort={ true } headerAlign='center' dataAlign='center'>Request Total</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Status' dataSort={ true } headerAlign='center' dataAlign='center'>Status</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTApprove}>Action</TableHeaderColumn>
+                                </BootstrapTable>
+                                <Modal show={show} onHide={handleClose}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Approve Manpower Request</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <Form>
+                                        <Row>
+                                            <Col>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                                    <Form.Label>Department</Form.Label>
+                                                    <Form.Control type="input" value={DeptAprrove} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+                                                    <Form.Label>Position</Form.Label>
+                                                    <Form.Control type="input" value={PositionAprrove} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
+                                                    <Form.Label>Level</Form.Label>
+                                                    <Form.Control type="input" value={LevelAprrove} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput4">
+                                                    <Form.Label>Request By</Form.Label>
+                                                    <Form.Control type="input" value={ReqByAprrove} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput5">
+                                                    <Form.Label>Request Date</Form.Label>
+                                                    <Form.Control type="input" value={ReqDateAprrove} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput6">
+                                                    <Form.Label>Status</Form.Label>
+                                                    <Form.Control type="input" value={ReqStatus} disabled autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                            <Col md={6}>
+                                                <Form.Group className="mb-3" controlId="exampleForm.ControlInput7">
+                                                    <Form.Label>Request Total</Form.Label>
+                                                    <Form.Control type="input" placeholder={ReqTotalAprrove} onChange={(e) => setReqTotalAprrove(e.target.value)} autoFocus/>
+                                                </Form.Group>
+                                            </Col>
+                                        </Row>
+                                    </Form>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                <Button variant="success" onClick={handleApprove}>
+                                    Save
+                                </Button>
+                                <Button variant="danger" onClick={(e) => handleDel(Id)}>
+                                    Delete
+                                </Button>
+                                </Modal.Footer>
+                                </Modal>
                             </Tab>
                             <Tab eventKey="Candidate" title={"Candidate Status"}>
                             <Tabs defaultActiveKey="home">
@@ -560,14 +719,14 @@ const FormsElements = () => {
                                     <Card.Title as="h5">Request manpower</Card.Title>
                                 </Card.Header>
                                     
-                                    <Card.Body>
+                                    <Card.Body> 
                                     {datasummaryDept.map(val => (
                                         <Form.Group controlId="exampleForm.ControlInput1">
                                             <Form.Label><h5>Request : {val.Overall - val.Actual}</h5></Form.Label>
                                         </Form.Group>
                                     ))}
                                         <hr></hr>
-                                    {pdApprove.map(val => (
+                                    {approveTotal.map(val => (
                                         <Form.Group controlId="exampleForm.ControlInput1">
                                             <Form.Label><h5>PD Approve : {val.Total}</h5></Form.Label>
                                         </Form.Group>
@@ -577,38 +736,20 @@ const FormsElements = () => {
                                 </Col>
                                 </Row>
                                 <Row>
+                                <Col>
                                     <h5>Manpower in department</h5>
                                     <hr></hr>
-                                    <Table responsive hover>
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th>#</th>
-                                            <th>Code</th>
-                                            <th>Name</th>
-                                            <th>Department</th>
-                                            <th>Position</th>
-                                            <th>Level</th>
-                                            <th>Shift</th>
-                                            <th>Start Work</th>
-                                            <th>Birthday</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {datauser.map(val => (
-                                            <tr class="text-center">
-                                                <th scope="row" key={val.Id}>{val.Datacnt}</th>
-                                                <td>{val.Code}</td>
-                                                <td>{val.Name}</td>
-                                                <td>{val.Department}</td>
-                                                <td>{val.Position}</td>
-                                                <td>{val.Level}</td>
-                                                <td>{val.Shift}</td>
-                                                <td>{val.Birthday}</td>
-                                                <td>{val.Start_Date}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
+                                    <BootstrapTable data={dataTableUser} striped hover pagination exportCSV search>
+                                        <TableHeaderColumn hidden dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                        <TableHeaderColumn isKey dataField='Code' dataSort={ true } headerAlign='center' dataAlign='center'>Code</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='Start_Work' dataSort={ true } headerAlign='center' dataAlign='center'>Start Work</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='Birthday' dataSort={ true } headerAlign='center' dataAlign='center'>Birthday</TableHeaderColumn>
+                                    </BootstrapTable>
+                                    </Col>
                                 </Row>
                             </Tab>
                         </Tabs> 

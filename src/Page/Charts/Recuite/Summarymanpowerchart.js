@@ -2,37 +2,37 @@ import React from 'react';
 import NVD3Chart from 'react-nvd3';
 
 function getDatum() {
-    var sin = [],
-        sin2 = [],
-        cos = [];
-    for (var i = 0; i < 100; i++) {
-        sin.push({
+    var Overall = [],
+        Actual = [],
+        Diff = [];
+    for (var i = 0; i < 30; i++) {
+        Overall.push({
             'x': i,
             'y': Math.sin(i / 10)
         });
-        sin2.push({
+        Actual.push({
             'x': i,
             'y': Math.sin(i / 10) * 0.25 + 0.5
         });
-        cos.push({
+        Diff.push({
             'x': i,
             'y': .5 * Math.cos(i / 10)
         });
     }
     return [
         {
-            values: sin,
-            key: 'Sine Wave',
+            values: Overall,
+            key: 'Overall',
             color: '#A389D4'
         },
         {
-            values: cos,
-            key: 'Cosine Wave',
+            values: Actual,
+            key: 'Actual',
             color: '#04a9f5'
         },
         {
-            values: sin2,
-            key: 'Another sine wave',
+            values: Diff,
+            key: 'Diff',
             color: '#1de9b6',
             area: true
         }
@@ -49,10 +49,10 @@ class LineChart extends React.Component {
                     React.createElement(NVD3Chart, {
                         xAxis: {
                             tickFormat: function(d){ return d; },
-                            axisLabel: 'Time (ms)'
+                            axisLabel: 'Date'
                         },
                         yAxis: {
-                            axisLabel: 'Voltage (v)',
+                            axisLabel: 'Manpower',
                             tickFormat: function(d) {return parseFloat(d).toFixed(2); }
                         },
                         type:'lineChart',

@@ -1,5 +1,3 @@
-import PDNotify from "../src/Notify_PD";
-
 export default {
     
     items: [

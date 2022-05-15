@@ -1,22 +1,20 @@
 import React , {useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import {Row, Col, Card, Table} from 'react-bootstrap';
+import {Row, Col, Card, Table } from 'react-bootstrap';
 
 import Aux from "../../hoc/_Aux";
-import DEMO from "../../store/constant";
-
-import avatar1 from '../../assets/images/user/avatar-1.jpg';
-import avatar2 from '../../assets/images/user/avatar-2.jpg';
-import avatar3 from '../../assets/images/user/avatar-3.jpg';
-
+import {BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 const ID_Token = window.localStorage.getItem("Token");
 
 const Dashboard = () => {
     const [datasummaryDeptall,setdatasummaryDeptall] = useState([]);
+    const [datactualDeptall,setdatactualDeptall] = useState([]);
+    const [datarequestall,setdatarequestall] = useState([]);
 
     //Get Data Of Recuitment
     async function getdatasummarydeptall() {
-        await fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/summary',{
+        await fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/summary/overall',{
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -28,10 +26,55 @@ const Dashboard = () => {
         .catch(Error => console.log(Error))
     }
 
+    //Get Data Of Recuitment
+    async function getdataactualdeptall() {
+        await fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/summary/actual',{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': ID_Token
+        }
+    })
+        .then(response => response.json()) 
+        .then(data => setdatactualDeptall(data))
+        .catch(Error => console.log(Error))
+    }
+
+    /// Get Request All
+    async function getrequestall () {
+        await fetch('http://13.250.116.42/node/express/api/pd/getpd/request/waitting',{
+            method: 'GET',
+            headers:{
+                'Content-Type': 'application/json',
+                'authorization': ID_Token
+            }
+        })
+        .then(respones => respones.json())
+        .then(data => setdatarequestall(data))
+        .catch(err => console.log(err))
+    }
+
     //useEffect
     useEffect(()=> {
         getdatasummarydeptall();
+        getdataactualdeptall();
+        getrequestall();
     }, []);
+
+    var dataTableRequest = datarequestall.map(val => (
+        {
+            Id: val.Id,
+            Department: val.Department,
+            Position: val.Position,
+            Level: val.Level,
+            ReqBy: val.ReqBy,
+            ReqDate: val.ReqDate,
+            ReqTotal: val.Total,
+            ApproveBy: val.ApproveBy,
+            ApproveDate: val.ApproveDate,
+            Status: val.Status
+        }
+    ));
 
     return(
         <Aux>
@@ -50,22 +93,25 @@ const Dashboard = () => {
                                 </div>
                             </Card.Body>
                             <Card.Body>
-                                {datasummaryDeptall.map(val => (
+                                
                                     <div className="row align-items-center justify-content-center card-active">
-                                        <div className="col-6">
-                                            <h6 className="text-left m-b-10"><span className="text-muted m-r-5">Overall:</span>{val.Overall}</h6>
+                                    {datasummaryDeptall.map(val => (
+                                        <div className="col-12">
+                                            <h6 className="text-left m-b-10 "><span className="text-muted m-r-5">Overall:</span>{val.Overall}</h6>
                                             <div className="progress">
                                                 <div className="progress-bar progress-c-theme" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val.Overall} aria-valuemin="0" aria-valuemax={val.Overall}/>
                                             </div>
-                                        </div>
-                                        <div className="col-6">
+                                        </div>))}
+                                    </div>
+                                    <div className="row align-items-center justify-content-center card-active">
+                                        {datactualDeptall.map(val => (
+                                        <div className="col-12">
                                             <h6 className="text-left  m-b-10"><span className="text-muted m-r-5">Actual:</span>{val.Actual}</h6>
                                             <div className="progress">
                                                 <div className="progress-bar progress-c-theme2" role="progressbar" style={{width: '45%', height: '6px'}} aria-valuenow={val.Actual} aria-valuemin="0" aria-valuemax={val.Overall}/>
                                             </div>
-                                        </div>
+                                        </div>))}
                                     </div>
-                                ))}
                             </Card.Body>
                         </Card>
                     </Link>
@@ -85,14 +131,16 @@ const Dashboard = () => {
                                 </Card.Body>
                                 <Card.Body>
                                     <div className="row align-items-center justify-content-center card-active">
-                                        <div className="col-6">
-                                            <h6 className="text-left m-b-10"><span className="text-muted m-r-5">Target:</span>34,185</h6>
+                                        <div className="col-12">
+                                            <h6 className="text-left m-b-10"><span className="text-muted m-r-5">Target:</span>3185</h6>
                                         <div className="progress">
                                             <div className="progress-bar progress-c-green" role="progressbar" style={{width: '40%', height: '6px'}} aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"/>
                                         </div>
+                                        </div>
                                     </div>
-                                    <div className="col-6">
-                                        <h6 className="text-left  m-b-10"><span className="text-muted m-r-5">Duration:</span>800</h6>
+                                    <div className="row align-items-center justify-content-center card-active">
+                                    <div className="col-12">
+                                        <h6 className="text-left  m-b-10"><span className="text-muted m-r-5">Duration:</span>80</h6>
                                         <div className="progress">
                                             <div className="progress-bar progress-c-blue" role="progressbar" style={{width: '70%', height: '6px'}} aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"/>
                                         </div>
@@ -117,14 +165,16 @@ const Dashboard = () => {
                                 </Card.Body>
                                 <Card.Body>
                                     <div className="row align-items-center justify-content-center card-active">
-                                        <div className="col-6">
-                                            <h6 className="text-left m-b-10"><span className="text-muted m-r-5">Target:</span>25,998</h6>
+                                        <div className="col-12">
+                                            <h6 className="text-left m-b-10"><span className="text-muted m-r-5">Target:</span>2998</h6>
                                             <div className="progress">
                                                 <div className="progress-bar progress-c-theme" role="progressbar" style={{width: '80%', height: '6px'}} aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"/>
                                             </div>
                                         </div>
-                                        <div className="col-6">
-                                            <h6 className="text-left  m-b-10"><span className="text-muted m-r-5">Duration:</span>900</h6>
+                                    </div>
+                                    <div className="row align-items-center justify-content-center card-active">
+                                        <div className="col-12">
+                                            <h6 className="text-left  m-b-10"><span className="text-muted m-r-5">Duration:</span>90</h6>
                                             <div className="progress">
                                                 <div className="progress-bar progress-c-theme2" role="progressbar" style={{width: '50%', height: '6px'}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"/>
                                             </div>
@@ -149,14 +199,16 @@ const Dashboard = () => {
                                 </Card.Body>
                                 <Card.Body>
                                     <div className="row align-items-center justify-content-center card-active">
-                                        <div className="col-6">
-                                            <h6 className="text-left m-b-10"><span className="text-muted m-r-5">Target:</span>25,998</h6>
+                                        <div className="col-12">
+                                            <h6 className="text-left m-b-10"><span className="text-muted m-r-5">Target:</span>2998</h6>
                                             <div className="progress">
                                                 <div className="progress-bar progress-c-theme" role="progressbar" style={{width: '80%', height: '6px'}} aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"/>
                                             </div>
                                         </div>
-                                        <div className="col-6">
-                                            <h6 className="text-left  m-b-10"><span className="text-muted m-r-5">Duration:</span>900</h6>
+                                    </div>
+                                    <div className="row align-items-center justify-content-center card-active">
+                                        <div className="col-12">
+                                            <h6 className="text-left  m-b-10"><span className="text-muted m-r-5">Duration:</span>90</h6>
                                             <div className="progress">
                                                 <div className="progress-bar progress-c-theme2" role="progressbar" style={{width: '50%', height: '6px'}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"/>
                                             </div>
@@ -169,68 +221,19 @@ const Dashboard = () => {
                     <Col>
                         <Card className='Recent-Users'>
                             <Card.Header>
-                                <Card.Title as='h5'>Recent Users</Card.Title>
+                                <Card.Title as='h5'>Request Manpower</Card.Title>
                             </Card.Header>
                             <Card.Body className='px-0 py-2'>
-                                <Table responsive hover>
-                                    <tbody>
-                                    <tr className="unread">
-                                        <td><img className="rounded-circle" style={{width: '40px'}} src={avatar1} alt="activity-user"/></td>
-                                        <td>
-                                            <h6 className="mb-1">Isabella Christensen</h6>
-                                            <p className="m-0">Lorem Ipsum is simply dummy text of…</p>
-                                        </td>
-                                        <td>
-                                            <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15"/>11 MAY 12:56</h6>
-                                        </td>
-                                        <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td>
-                                    </tr>
-                                    <tr className="unread">
-                                        <td><img className="rounded-circle" style={{width: '40px'}} src={avatar2} alt="activity-user"/></td>
-                                        <td>
-                                            <h6 className="mb-1">Mathilde Andersen</h6>
-                                            <p className="m-0">Lorem Ipsum is simply dummy text of…</p>
-                                        </td>
-                                        <td>
-                                            <h6 className="text-muted"><i className="fa fa-circle text-c-red f-10 m-r-15"/>11 MAY 10:35</h6>
-                                        </td>
-                                        <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td>
-                                    </tr>
-                                    <tr className="unread">
-                                        <td><img className="rounded-circle" style={{width: '40px'}} src={avatar3} alt="activity-user"/></td>
-                                        <td>
-                                            <h6 className="mb-1">Karla Sorensen</h6>
-                                            <p className="m-0">Lorem Ipsum is simply dummy text of…</p>
-                                        </td>
-                                        <td>
-                                            <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15"/>9 MAY 17:38</h6>
-                                        </td>
-                                        <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td>
-                                    </tr>
-                                    <tr className="unread">
-                                        <td><img className="rounded-circle" style={{width: '40px'}} src={avatar1} alt="activity-user"/></td>
-                                        <td>
-                                            <h6 className="mb-1">Ida Jorgensen</h6>
-                                            <p className="m-0">Lorem Ipsum is simply dummy text of…</p>
-                                        </td>
-                                        <td>
-                                            <h6 className="text-muted f-w-300"><i className="fa fa-circle text-c-red f-10 m-r-15"/>19 MAY 12:56</h6>
-                                        </td>
-                                        <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td>
-                                    </tr>
-                                    <tr className="unread">
-                                        <td><img className="rounded-circle" style={{width: '40px'}} src={avatar2} alt="activity-user"/></td>
-                                        <td>
-                                            <h6 className="mb-1">Albert Andersen</h6>
-                                            <p className="m-0">Lorem Ipsum is simply dummy text of…</p>
-                                        </td>
-                                        <td>
-                                            <h6 className="text-muted"><i className="fa fa-circle text-c-green f-10 m-r-15"/>21 July 12:56</h6>
-                                        </td>
-                                        <td><a href={DEMO.BLANK_LINK} className="label theme-bg2 text-white f-12">Reject</a><a href={DEMO.BLANK_LINK} className="label theme-bg text-white f-12">Approve</a></td>
-                                    </tr>
-                                    </tbody>
-                                </Table>
+                                <BootstrapTable data={dataTableRequest} striped hover pagination search>
+                                    <TableHeaderColumn hidden dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='ReqBy' dataSort={ true } headerAlign='center' dataAlign='center'>Request By</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='ReqTotal' dataSort={ true } headerAlign='center' dataAlign='center'>Request Total</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Status' dataSort={ true } headerAlign='center' dataAlign='center'>Status</TableHeaderColumn>
+                                </BootstrapTable>
+                                
                             </Card.Body>
                         </Card>
                     </Col>

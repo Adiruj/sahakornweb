@@ -4,16 +4,20 @@ import {
     Row,
     Col,
     Table,
+    Button,
     Card,
     Form,
 } from 'react-bootstrap';
-import {  Link , useParams} from "react-router-dom";
+import {  Link , useParams , useHistory} from "react-router-dom";
+import {BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 import Aux from "../../../hoc/_Aux";
 
 const ID_Token = window.localStorage.getItem("Token");
 
 const BasicButton = () =>  {
+    const history = useHistory();
     const { Dept } = useParams();
     const [hasError,setHaserror] = useState(false);
     const [datacandidatedept,setdatacandidatedept] = useState([]);
@@ -105,6 +109,39 @@ const BasicButton = () =>  {
         getdatapass();
     }, []);
 
+    var dataTablecandidate = datacandidatedept.map(val => (
+        {
+            Id: val.Id,
+            Datacnt: val.Datacnt,
+            Department: val.Department,
+            Position: val.Position,
+            Dept: val.Dept,
+            Status_Current: val.Status_Current,
+            Status_Interview1: val.Status_Interview1,
+            Status_Interview2: val.Status_Interview2,
+            Status_Pass: val.Status_Pass
+        }
+    ));
+
+    const BTViewdata = () => {
+        
+        return (
+            <div>
+                <Button className="btn btn-primary">
+                    View
+                </Button>
+            </div>
+        )
+    }
+
+    var options = {
+        defaultSortName: 'Current',  // default sort column name
+        defaultSortOrder: 'desc', // default sort order
+        onRowClick: function(row){   
+            history.push("/candidate/dept/detail/" + row.Department + "/" + row.Position)
+        }
+    }
+    
         return (
             <Aux>
                 <Row>
@@ -114,7 +151,9 @@ const BasicButton = () =>  {
                                 <Card.Title as="h5">Candidate</Card.Title>
                                     <span className="d-block m-t-5">{Dept} candidate</span>
                                     <hr></hr>
-                                    <Row>
+                            </Card.Header>
+                            <Card.Body>
+                            <Row>
                                         <Col md={8}>
                                             <Card.Body className="text-center">
                                                 <SummarymanpowerChart/>
@@ -129,22 +168,34 @@ const BasicButton = () =>  {
                                                     <Card.Body>
                                                     {dataCurrent.map(val =>(
                                                     <Form.Group controlId="exampleForm.ControlInput1">
-                                                        <Form.Label>Current candidate : <Form.Label>{val.cntStaus1}</Form.Label></Form.Label>
+                                                        <Form.Label><h4>Current candidate : {val.cntStaus1}</h4></Form.Label>
+                                                        <div className="progress">
+                                                            <div className="progress-bar progress-c-theme" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val.cntStaus1} aria-valuemin="0" aria-valuemax={val.cntStaus1}/>
+                                                        </div>
                                                     </Form.Group>
                                                     ))}
                                                     {dataInterview1.map(val =>(
                                                     <Form.Group controlId="exampleForm.ControlInput2">
-                                                        <Form.Label>Interview round 1 : <Form.Label>{val.cntStaus2}</Form.Label></Form.Label>
+                                                        <Form.Label><h4>Interview round 1 : {val.cntStaus2}</h4></Form.Label>
+                                                        <div className="progress">
+                                                            <div className="progress-bar progress-c-theme2" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val.cntStaus2} aria-valuemin="0" aria-valuemax={val.cntStaus1}/>
+                                                        </div>
                                                     </Form.Group>
                                                     ))}
                                                     {dataInterview2.map(val =>(
                                                     <Form.Group controlId="exampleForm.ControlInput3">
-                                                        <Form.Label>Interview round 2 : <Form.Label>{val.cntStaus3}</Form.Label></Form.Label>
+                                                        <Form.Label><h4>Interview round 2 : {val.cntStaus3}</h4></Form.Label>
+                                                        <div className="progress">
+                                                            <div className="progress-bar progress-c-theme3" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val.cntStaus3} aria-valuemin="0" aria-valuemax={val.cntStaus1}/>
+                                                        </div>
                                                     </Form.Group>
                                                     ))}
                                                     {dataPass.map(val =>(
                                                     <Form.Group controlId="exampleForm.ControlInput4">
-                                                        <Form.Label>Pass confirmation : <Form.Label>{val.cntStaus4}</Form.Label></Form.Label>
+                                                        <Form.Label><h4>Pass confirmation : {val.cntStaus4}</h4></Form.Label>
+                                                        <div className="progress">
+                                                            <div className="progress-bar progress-c-theme" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val.cntStaus4} aria-valuemin="0" aria-valuemax={val.cntStaus1}/>
+                                                        </div>
                                                     </Form.Group>
                                                     ))}
                                                 </Card.Body>
@@ -152,38 +203,28 @@ const BasicButton = () =>  {
                                             </Card>
                                         </Col>
                                     </Row>
-                            </Card.Header>
-                            <Card.Body>
-                                <span className="d-block m-t-5">Candidate of {Dept} Department</span>
-                                <Table responsive hover>
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th>#</th>
-                                            <th>Position</th>
-                                            <th>Current candidate</th>
-                                            <th>Interview round 1</th>
-                                            <th>Interview round 2</th>
-                                            <th>Pass confirmation</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {datacandidatedept.map(val => (
-                                        <tr class="text-center">
-                                            <th scope="row" key={val.Id}>{val.Datacnt}</th>
-                                            <td>{val.Position}</td>
-                                            <td>{val.Status_Current}</td>
-                                            <td>{val.Status_Interview1}</td>
-                                            <td>{val.Status_Interview2}</td>
-                                            <td>{val.Status_Pass}</td>
-                                            <td><Link to={'/candidate/dept/detail/'+val.Dept+'/'+val.Position} className="btn btn-primary">View</Link></td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </Table>
-                                
                             </Card.Body>
                         </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                    <Card>
+                        <Card.Header>
+                        <Card.Title as="h5">Candidate of {Dept} Department</Card.Title>
+                        </Card.Header>
+                        <Card.Body>
+                            <BootstrapTable data={dataTablecandidate} options={options} striped hover pagination exportCSV search>
+                                <TableHeaderColumn isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                <TableHeaderColumn dataField='Status_Current' dataSort={ true } headerAlign='center' dataAlign='center'>Current</TableHeaderColumn>
+                                <TableHeaderColumn dataField='Status_Interview1' dataSort={ true } headerAlign='center' dataAlign='center'>Interview 1</TableHeaderColumn>
+                                <TableHeaderColumn dataField='Status_Interview2' dataSort={ true } headerAlign='center' dataAlign='center'>Interview 2</TableHeaderColumn>
+                                <TableHeaderColumn dataField='Status_Pass' dataSort={ true } headerAlign='center' dataAlign='center'>Pass</TableHeaderColumn>
+                                <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
+                            </BootstrapTable>
+                        </Card.Body>
+                    </Card>
                     </Col>
                 </Row>
             </Aux>

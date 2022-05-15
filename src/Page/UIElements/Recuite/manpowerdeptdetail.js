@@ -2,15 +2,11 @@ import React , {useState , useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import DepetmanpowerChart from "../../Charts/Recuite/Deptmanpowerchart";
-import {
-    Row,
-    Col,
-    Table,
-    Card,
-    Form
-} from 'react-bootstrap';
+import {Row,Col,Card,Form} from 'react-bootstrap';
 
 import Aux from "../../../hoc/_Aux";
+import {BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 const ID_Token = window.localStorage.getItem("Token");
 const Deptview = () =>  {
@@ -18,6 +14,7 @@ const Deptview = () =>  {
     const [hasError,setHaserror] = useState(false);
     const [datauser,setdatauser] = useState([]);
     const [datasummaryUser,setdatasummaryUser] = useState([]);
+    const [datactualUser,setdatactualUser] = useState([]);
 
     useEffect(()=> {
         async function getdatauser() {
@@ -35,7 +32,7 @@ const Deptview = () =>  {
     }
 
     async function getdatasummaryuser() {
-            await fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/dept/summary/' + Position,{
+            await fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/dept/position/summary/overall/'+Dept + '/' + Position,{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,11 +45,40 @@ const Deptview = () =>  {
         .catch(console.log(hasError))
     }
 
+    async function getdataactualuser() {
+        await fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/dept/position/summary/actual/'+Dept + '/' + Position,{
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': ID_Token
+        }
+        })
+        .then(response => response.json()) 
+        .then(data => setdatactualUser(data))
+        .catch(Error => setHaserror(Error))
+        .catch(console.log(hasError))
+    }
+
         getdatauser();
         getdatasummaryuser();
+        getdataactualuser();
     }, []);
 
-        return (
+    var dataTable = datauser.map(val => (
+        {
+            id: val.Id,
+            Code: val.Code,
+            Name: val.Name,
+            Department: val.Department,
+            Position: val.Position,
+            Level: val.Level,
+            Shift: val.Shift,
+            Start_Date: val.Start_Date,
+            Birthday: val.Birthday
+        }
+    ));
+
+    return (
             <Aux>
                 <Row>
                     <Col>
@@ -61,7 +87,9 @@ const Deptview = () =>  {
                                 <Card.Title as="h5">Position Manpower</Card.Title>
                                     <span className="d-block m-t-5">{Position} manpower</span>
                                     <hr></hr>
-                                    <Row>
+                            </Card.Header>
+                            <Card.Body>
+                            <Row>
                                         <Col md={8}>
                                             <Card.Body className="text-center">
                                                 <DepetmanpowerChart/>
@@ -71,64 +99,63 @@ const Deptview = () =>  {
                                             <Card>
                                                 <Card.Header >
                                                 <Card.Title as="h5">{Position} manpower monitor</Card.Title>
-                                                </Card.Header>
-                                                {datasummaryUser.map(val => (
+                                                </Card.Header> 
+                                                
                                                     <Card.Body>
+                                                    {datasummaryUser.map(val => (
                                                     <Form.Group controlId="exampleForm.ControlInput1">
-                                                        <Form.Label>Overall : <Form.Label>{val.Overall}</Form.Label></Form.Label>
-                                                    </Form.Group>
+                                                        <Form.Label><h4>Overall : {val.Overall}</h4></Form.Label>
+                                                        <div className="progress">
+                                                            <div className="progress-bar progress-c-theme" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val.Overall} aria-valuemin="0" aria-valuemax={val.Overall}/>
+                                                        </div>
+                                                    </Form.Group>))}
+                                                    {datactualUser.map(val => (
                                                     <Form.Group controlId="exampleForm.ControlInput1">
-                                                        <Form.Label>Actual : <Form.Label>{val.Actual}</Form.Label></Form.Label>
-                                                    </Form.Group>
-                                                    <Form.Group controlId="exampleForm.ControlInput1">
-                                                        <Form.Label>Diff : <Form.Label>{val.Overall - val.Actual}</Form.Label></Form.Label>
-                                                    </Form.Group>
+                                                        <Form.Label><h4>Actual : {val.Actual}</h4></Form.Label>
+                                                        <div className="progress">
+                                                            <div className="progress-bar progress-c-theme2" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val.Actual} aria-valuemin="0" aria-valuemax={val.Actual}/>
+                                                        </div>
+                                                    </Form.Group>))}
+                                                    {datasummaryUser.map(val1 => (
+                                                        datactualUser.map(val2 => (
+                                                            <Form.Group controlId="exampleForm.ControlInput1">
+                                                                <Form.Label><h4>Diff : {val2.Actual - val1.Overall}</h4></Form.Label>
+                                                                <div className="progress">
+                                                                    <div className="progress-bar progress-c-theme3" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val2.Actual - val1.Overall} aria-valuemin="0" aria-valuemax={val2.Actual - val1.Overall}/>
+                                                                </div>
+                                                            </Form.Group>))
+                                                    ))}
                                                 </Card.Body>
-                                                ))}
                                             </Card>
                                         </Col>
                                     </Row>
-                            </Card.Header>
-                            <Card.Body>
-                                <span className="d-block m-t-5">Department manpower</span>
-                                <Table responsive hover>
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th>#</th>
-                                            <th>Code</th>
-                                            <th>Name</th>
-                                            <th>Dept</th>
-                                            <th>Position</th>
-                                            <th>Level</th>
-                                            <th>Shift</th>
-                                            <th>Start Work</th>
-                                            <th>Birthday</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {datauser.map(val => (
-                                        <tr class="text-center">
-                                            <th scope="row" key={val.Id}>{val.Id}</th>
-                                            <td>{val.Code}</td>
-                                            <td>{val.Name}</td>
-                                            <td>{val.Dept}</td>
-                                            <td>{val.Position}</td>
-                                            <td>{val.Level}</td>
-                                            <td>{val.Shift}</td>
-                                            <td>{val.Start_Date}</td>
-                                            <td>{val.Birthday}</td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </Table>
-                                
                             </Card.Body>
                         </Card>
                     </Col>
                 </Row>
+                <Row>
+                    <Col>
+                    <Card>
+                        <Card.Header>
+                            <Card.Title as="h5">{Position} Position Manpower</Card.Title>
+                        </Card.Header>
+                        <Card.Body>
+                            <BootstrapTable data={dataTable} striped hover pagination exportCSV search>
+                                    <TableHeaderColumn isKey dataField='Code' dataSort={ true } headerAlign='center' dataAlign='center'>Code</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Shift' dataSort={ true } headerAlign='center' dataAlign='center'>Shift</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Start_Date' dataSort={ true } headerAlign='center' dataAlign='center'>Start Date</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Birthday' dataSort={ true } headerAlign='center' dataAlign='center'>Birthday</TableHeaderColumn>
+                            </BootstrapTable>
+                        </Card.Body>
+                    </Card>
+                    </Col>
+                </Row>
             </Aux>
         );
-    
 }
 
 export default Deptview;
