@@ -1,7 +1,7 @@
 import React , {useState , useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import DepetmanpowerChart from "../../Charts/Recuite/Deptmanpowerchart";
+import DepetmanpowerChart from "../../Charts/Recuite/Summarymanpowerchart";
 import {Row,Col,Card,Form} from 'react-bootstrap';
 
 import Aux from "../../../hoc/_Aux";
@@ -141,14 +141,14 @@ const Deptview = () =>  {
                         </Card.Header>
                         <Card.Body>
                             <BootstrapTable data={dataTable} striped hover pagination exportCSV search>
-                                    <TableHeaderColumn isKey dataField='Code' dataSort={ true } headerAlign='center' dataAlign='center'>Code</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Shift' dataSort={ true } headerAlign='center' dataAlign='center'>Shift</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Start_Date' dataSort={ true } headerAlign='center' dataAlign='center'>Start Date</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Birthday' dataSort={ true } headerAlign='center' dataAlign='center'>Birthday</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' isKey dataField='Code' dataSort={ true } headerAlign='center' dataAlign='center'>Code</TableHeaderColumn>
+                                    <TableHeaderColumn width='150' dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
+                                    <TableHeaderColumn width='150' dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Shift' dataSort={ true } headerAlign='center' dataAlign='center'>Shift</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Start_Date' dataSort={ true } headerAlign='center' dataAlign='center'>Start Date</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Birthday' dataSort={ true } headerAlign='center' dataAlign='center'>Birthday</TableHeaderColumn>
                             </BootstrapTable>
                         </Card.Body>
                     </Card>

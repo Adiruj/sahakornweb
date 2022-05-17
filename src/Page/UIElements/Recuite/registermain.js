@@ -1,6 +1,8 @@
 import React , {useState , useEffect } from 'react';
-import {Row, Col, Card, Form, Table ,Button ,Tab , Tabs} from 'react-bootstrap';
+import {Row, Col, Card, Form, Table ,Button ,Tab , Tabs , Modal} from 'react-bootstrap';
 import Aux from "../../../hoc/_Aux";
+import {BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 const ID_Token = window.localStorage.getItem("Token");
 const Department_storage = window.localStorage.getItem("Department");
@@ -19,6 +21,29 @@ const FormsElements = () => {
     const [approveTotal , setapproveTotal] = useState([]);
     const [fileupload , setfileupload] = useState([]);
     //const [Resumess , setfileuploadres] = useState([]);
+
+    const [show, setShow] = useState(false);
+    const [Id,setIdcandidate] = useState([]);
+    const [nameCandidate,setnameCandidate] = useState([]); 
+    const [departmentCandidate,setdepartmentCandidate] = useState([]); 
+    const [positionCandidate,setpositionCandidate] = useState([]); 
+    const [levelCandidate,setlevelCandidate] = useState([]);
+    const [resumeCandidate,setresumeCandidate] = useState([]); 
+    const [stautsCandidate,setstautsCandidate] = useState([]); 
+    const handleClose = () => setShow(false);
+
+
+    const [showReq, setshowReq] = useState(false);
+    const [IdReq,setIdReq] = useState([]);
+    const [departmentReq,setdepartmentReq] = useState([]); 
+    const [positionReq,setpositionReq] = useState([]); 
+    const [levelReq,setlevelReq] = useState([]);
+    const [ReqBy,setReqBy] = useState([]); 
+    const [ReqDate,setReqDate] = useState([]); 
+    const [ReqTotal,setReqTotal] = useState([]); 
+    const [ReqStatus,setReqStatus] = useState([]); 
+    const handleCloseReq = () => setshowReq(false);
+
 
     /// Get Dept list
     async function getdeptlist () {
@@ -175,6 +200,94 @@ const FormsElements = () => {
         getPDapproveTotal();
     },[])
 
+    //For Candidate List
+    const BTViewdata = () => {
+        return (
+            <div>
+                <Button className="btn btn-primary">
+                    View
+                </Button>
+            </div>
+        )
+    }
+    //Current List
+    var dataTablecurrent = dataRegisterall.map(val => (
+        {
+            Id: val.Id,
+            Name: val.Name,
+            Department: val.Department,
+            Dept: val.Dept,
+            Position: val.Position,
+            Level: val.Level,
+            Resume: val.Resume
+        }
+    ));
+    var options = {
+        //defaultSortName: 'Current',  // default sort column name
+        //defaultSortOrder: 'desc', // default sort order
+        onRowClick: function(row){   
+            setIdcandidate(row.Id);
+            setnameCandidate(row.Name);
+            setdepartmentCandidate(row.Department)
+            setpositionCandidate(row.Position);
+            setlevelCandidate(row.Level);
+            setresumeCandidate(row.Resume);
+            setstautsCandidate(row.Status);
+            setShow(true);
+        }
+    }
+    const handleAccep1 = async () => {
+
+    }
+
+    const handleDel1 = async () => {
+
+    }
+
+    //For Request List
+    const BTViewdataReq = () => {
+        return (
+            <div>
+                <Button className="btn btn-primary">
+                    View
+                </Button>
+            </div>
+        )
+    }
+    //Current List
+    var dataTableReq = dataRequestrall.map(val => (
+        {
+            Id: val.Id,
+            Department: val.Department,
+            Position: val.Position,
+            Level: val.Level,
+            ReqBy: val.ReqBy,
+            ReqDate: val.ReqDate,
+            Total: val.Total,
+            Status: val.Status
+        }
+    ));
+    var optionsReq = {
+            onRowClick: function(row){   
+            setIdReq(row.Id);
+            setdepartmentReq(row.Department);
+            setpositionReq(row.Position)
+            setlevelReq(row.Level);
+            setReqBy(row.ReqBy);
+            setReqDate(row.ReqDate);
+            setReqTotal(row.Total);
+            setReqStatus(row.Status);
+            setshowReq(true);
+        }
+    }
+    const handleAccepReq = async () => {
+
+    }
+
+    const handleDelReq = async () => {
+
+    }
+
         return (
             <Aux>
                 <Row>
@@ -295,108 +408,155 @@ const FormsElements = () => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Table responsive hover>
-                                        <thead>
-                                            <tr className="text-center"> 
-                                                <th>#</th>
-                                                <th>Name</th>
-                                                <th>Department</th>
-                                                <th>Position</th>
-                                                <th>Level</th>
-                                                <th>Resume</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {dataRegisterall.map((val,index) => (
-                                            <tr key={val.index} className="text-center">
-                                                <th scope="row">{val.Datacnt}</th>
-                                                <td>{val.Name}</td>
-                                                <td>{val.Dept}</td>
-                                                <td>{val.Position}</td>
-                                                <td>{val.Level}</td>
-                                                <td><Button className="btn btn-primary" href={'http://13.250.116.42/node/express/api/dowload/resume/'+val.Id} target="_blank" >Resume</Button></td>
-                                                <td><Button className="btn btn-success" >Accept</Button><Button className="btn btn-danger" onClick={(e) => handleDel(val.Id,index,e)}>Del</Button><Button className="btn btn-secondary">Edit</Button></td>
-                                            </tr>
-                                        ))}
-                                        </tbody>
-                                    </Table>
+                                    <BootstrapTable data={dataTablecurrent} options={options} striped hover pagination exportCSV search>
+                                    <TableHeaderColumn hidden isKey dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn hidden dataField='Resume' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
+                                    </BootstrapTable>
+                                    <Modal show={show} onHide={handleClose}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Candidate Information</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <Form>
+                                            <Row>
+                                                <Col>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                                        <Form.Label>Name</Form.Label>
+                                                        <Form.Control type="input" value={nameCandidate} disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                                        <Form.Label>Department</Form.Label>
+                                                        <Form.Control type="input" value={departmentCandidate} disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+                                                        <Form.Label>Position</Form.Label>
+                                                        <Form.Control type="input" value={positionCandidate} disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
+                                                        <Form.Label>Level</Form.Label>
+                                                        <Form.Control type="input" value={levelCandidate} disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput5">
+                                                        <Form.Label>Status</Form.Label>
+                                                        <Form.Control type="input" value="Current Candidate" disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput4">
+                                                        <Form.Label>Resume</Form.Label>
+                                                        <Form.Control type="input" value={resumeCandidate} disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+                                        </Form>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                    <Button variant="success" onClick={handleAccep1}>
+                                        Accept
+                                    </Button>
+                                    <Button variant="danger" onClick={(e) => handleDel1(Id)}>
+                                        Reject
+                                    </Button>
+                                    </Modal.Footer>
+                                    </Modal>
                                     </Col>
                                 </Row>
                             </Tab>
                             <Tab eventKey="Request" title="Request list">
-                            <Row>
-                                    <Col md={4}>
-                                        <Form.Group controlId="exampleForm.dept">
-                                            <Form.Label>Department</Form.Label>
-                                            <Form.Control as="select" onChange={(e) => setDeptsel(e.target.value)}>
-                                                <option>Department</option>
-                                                {deptlist.map(val => (
-                                                <option>{val.Department}</option>
-                                                ))}
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Col>
-                                    <Col md={3}>
-                                        <Form.Group controlId="exampleForm.dept">
-                                            <Form.Label>Position</Form.Label>
-                                            <Form.Control as="select" onChange={(e) => setPositionsel(e.target.value)}>
-                                                <option>Position</option>
-                                                {deptposition.map(val => (
-                                                <option>{val.Position}</option>
-                                                ))}
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Col>
-                                    <Col md={3}>
-                                        <Form.Group controlId="exampleForm.dept">
-                                            <Form.Label>Level</Form.Label>
-                                            <Form.Control as="select" onChange={(e) => setLevelsel(e.target.value)}>
-                                                <option>Level</option>
-                                                {deptlevel.map(val => (
-                                                <option>{val.Level}</option>
-                                                ))}
-                                            </Form.Control>
-                                        </Form.Group>
-                                    </Col>
-                                    <Col md={2}>
-                                        <Button variant="primary btn-lg mt-4 btn-block" onClick={handleSubmit}>
-                                        <i className="feather icon-search"/>Search
-                                        </Button>
-                                    </Col>
-                                </Row>
                                 <Row>
                                     <Col>
-                                        <Table responsive hover>
-                                        <thead>
-                                            <tr className="text-center"> 
-                                                <th>#</th>
-                                                <th>Department</th>
-                                                <th>Position</th>
-                                                <th>Level</th>
-                                                <th>Request By</th>
-                                                <th>Request Date</th>
-                                                <th>Request Total</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        {dataRequestrall.map((val,index) => (
-                                            <tr key={val.index} className="text-center">
-                                                <th scope="row">{val.Datacnt}</th>
-                                                <td>{val.Department}</td>
-                                                <td>{val.Position}</td>
-                                                <td>{val.Level}</td>
-                                                <td>{val.ReqBy}</td>
-                                                <td>{val.ReqDate}</td>
-                                                <td>{val.Total}</td>
-                                                <td>{val.Status}</td>
-                                                <td><Button className="btn btn-success btn-block" >Complete</Button></td>
-                                            </tr>
-                                        ))}
-                                        </tbody>
-                                    </Table>
+                                    <BootstrapTable data={dataTableReq} options={dataTableReq} striped hover pagination exportCSV search>
+                                    <TableHeaderColumn hidden isKey dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn hidden dataField='Resume' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='ReqBy' dataSort={ true } headerAlign='center' dataAlign='center'>Request By</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='ReqDate' dataSort={ true } headerAlign='center' dataAlign='center'>Request Date</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Total' dataSort={ true } headerAlign='center' dataAlign='center'>Total</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='Status' dataSort={ true } headerAlign='center' dataAlign='center'>Status</TableHeaderColumn>
+                                    <TableHeaderColumn hidden dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
+                                    </BootstrapTable>
+                                    <Modal show={show} onHide={handleClose}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Manpower Request Information</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <Form>
+                                            <Row>
+                                                <Col>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                                        <Form.Label>Name</Form.Label>
+                                                        <Form.Control type="input" value={nameCandidate} disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                                        <Form.Label>Department</Form.Label>
+                                                        <Form.Control type="input" value={departmentCandidate} disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
+                                                        <Form.Label>Position</Form.Label>
+                                                        <Form.Control type="input" value={positionCandidate} disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
+                                                        <Form.Label>Level</Form.Label>
+                                                        <Form.Control type="input" value={levelCandidate} disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput5">
+                                                        <Form.Label>Status</Form.Label>
+                                                        <Form.Control type="input" value="Current Candidate" disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput4">
+                                                        <Form.Label>Resume</Form.Label>
+                                                        <Form.Control type="input" value={resumeCandidate} disabled autoFocus/>
+                                                    </Form.Group>
+                                                </Col>
+                                            </Row>
+                                        </Form>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                    <Button variant="success" onClick={handleAccep1}>
+                                        Accept
+                                    </Button>
+                                    <Button variant="danger" onClick={(e) => handleDel1(Id)}>
+                                        Reject
+                                    </Button>
+                                    </Modal.Footer>
+                                    </Modal>
                                     </Col>
                                 </Row>
                             </Tab>

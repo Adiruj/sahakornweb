@@ -1,7 +1,7 @@
 import React , {useState , useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {  useHistory} from "react-router-dom";
-import DepetmanpowerChart from "../../Charts/Recuite/Deptmanpowerchart";
+import DepetmanpowerChart from "../../Charts/Recuite/Summarymanpowerchart";
 import {
     Row,
     Col,
@@ -165,12 +165,12 @@ const Deptview = () =>  {
                             </Card.Header>
                             <Card.Body>
                                 <BootstrapTable data={dataTable} options={options} striped hover pagination exportCSV search>
-                                    <TableHeaderColumn isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Overall' dataSort={ true } headerAlign='center' dataAlign='center'>Overall</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Actual' dataSort={ true } headerAlign='center' dataAlign='center'>Actual</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Diff' dataSort={ true } headerAlign='center' dataAlign='center'>Diff</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
+                                    <TableHeaderColumn width='300' isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                    <TableHeaderColumn width='200' dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Overall' dataSort={ true } headerAlign='center' dataAlign='center'>Overall</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Actual' dataSort={ true } headerAlign='center' dataAlign='center'>Actual</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Diff' dataSort={ true } headerAlign='center' dataAlign='center'>Diff</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
                                 </BootstrapTable>
                             </Card.Body>
                         </Card>

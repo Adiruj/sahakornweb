@@ -1,65 +1,84 @@
 import React , {useState , useEffect } from 'react';
 import SummarymanpowerChart from "../../Charts/Recuite/Summarymanpowerchart";
-import {Row,Col,Card,Form,Button} from 'react-bootstrap';
+import {Row,Col,Card,Form,Button,Container} from 'react-bootstrap';
 import { useHistory} from "react-router-dom";
 import Aux from "../../../hoc/_Aux";
 import {BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-//import 'bootstrap/dist/css/bootstrap.min.css';
+import { ScatterBoxLoader  } from "react-awesome-loaders";
 
 const ID_Token = window.localStorage.getItem("Token");
 
 const BasicButton = () =>  {
     const history = useHistory();
-    //const [hasError,setHaserror] = useState(false);
+    const [isLoading , setIsloading] = useState(false);
     const [dataDeptall,setdataDeptall] = useState([]);
     const [datasummaryDeptall,setdatasummaryDeptall] = useState([]);
     const [dataactualDeptall,setdataactualDeptall] = useState([]);
 
-    useEffect(()=> {
-        async function getdatadeptall() {
-            await fetch('http://13.250.116.42/node/express/api/department/getdept/',{
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': ID_Token
-            }
-        })
-        .then(response => response.json())
-        .then(data => setdataDeptall(data))
-        .catch(Error => console.log(Error))
-    }
-
-    async function getdatasummarydeptall() {
-            await fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/summary/overall',{
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': ID_Token
-            }
-        })
-        .then(response => response.json()) 
-        .then(data => setdatasummaryDeptall(data))
-        .catch(Error => console.log(Error))
-    }
-
-    async function getdataactualdeptall() {
-        await fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/summary/actual',{
+    async function getdatadeptall() {
+        await fetch('http://13.250.116.42/node/express/api/department/getdept/',{
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'authorization': ID_Token
             }
         })
-        .then(response => response.json()) 
-        .then(data => setdataactualDeptall(data))
+        .then(response => response.json())
+        .then(data => {
+            setdataDeptall(data);
+            fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/summary/overall',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': ID_Token
+                }
+            })
+            .then(response => response.json()) 
+            .then(data => {
+                setdatasummaryDeptall(data);
+                fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/summary/actual',{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': ID_Token
+                    }
+                })
+                .then(response => response.json()) 
+                .then(data => {
+                    setdataactualDeptall(data);
+                    setIsloading(false)
+                })
+                .catch(Error => console.log(Error))
+            })
+            .catch(Error => console.log(Error))
+        })
         .catch(Error => console.log(Error))
     }
-    
+
+    useEffect(()=> {
+        setIsloading(true)
         getdatadeptall();
-        getdatasummarydeptall();
-        getdataactualdeptall();
+        //getdatasummarydeptall();
+        //getdataactualdeptall();
     }, []);
+
+    //Loading State
+    if(isLoading){
+        return (
+            <Container>
+                <Row>
+                    <Col md={4}></Col>
+                    <Col md={4}>
+                        <ScatterBoxLoader
+                            primaryColor={"#6366F1"}
+                        />
+                    </Col>
+                    <Col md={4}></Col>
+                </Row>
+            </Container>  
+        )
+    }
 
     var dataTable = dataDeptall.map(val => (
         {
@@ -158,12 +177,12 @@ const BasicButton = () =>  {
                             </Card.Header>
                             <Card.Body>
                                 <BootstrapTable data={dataTable} options={options} striped hover pagination exportCSV search>
-                                    <TableHeaderColumn isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Dept' dataSort={ true } headerAlign='center' dataAlign='center'>Dept</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Overall' dataSort={ true } headerAlign='center' dataAlign='center'>Overall</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Actual' dataSort={ true } headerAlign='center' dataAlign='center'>Actual</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Diff' dataSort={ true } headerAlign='center' dataAlign='center'>Diff</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
+                                    <TableHeaderColumn width='300' isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                    <TableHeaderColumn width='200' dataField='Dept' dataSort={ true } headerAlign='center' dataAlign='center'>Dept</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Overall' dataSort={ true } headerAlign='center' dataAlign='center'>Overall</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Actual' dataSort={ true } headerAlign='center' dataAlign='center'>Actual</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Diff' dataSort={ true } headerAlign='center' dataAlign='center'>Diff</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
                                 </BootstrapTable>
                             </Card.Body>
                         </Card>                         

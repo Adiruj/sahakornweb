@@ -473,21 +473,22 @@ const FormsElements = () => {
                 </Row>
                 <Row>
                     <Col>
-                    <h5 className="mt-4">PD Approve Status</h5>
-                    <hr/>
-                        <Tabs defaultActiveKey="Request">
-                            <Tab eventKey="Request" title="Request list">
+                    <Card>
+                        <Card.Header>
+                        <Card.Title as="h5">PD Approve Status </Card.Title>
+                        </Card.Header>
+                        <Card.Body>
                             <BootstrapTable data={dataTableRequest} options={options} striped hover pagination exportCSV search>
-                                    <TableHeaderColumn hidden dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                    <TableHeaderColumn isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='ReqBy' dataSort={ true } headerAlign='center' dataAlign='center'>Request By</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='ReqTotal' dataSort={ true } headerAlign='center' dataAlign='center'>Request Total</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Status' dataSort={ true } headerAlign='center' dataAlign='center'>Status</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTApprove}>Action</TableHeaderColumn>
-                                </BootstrapTable>
-                                <Modal show={show} onHide={handleClose}>
+                                <TableHeaderColumn width='100' hidden dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                <TableHeaderColumn width='200' isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='ReqBy' dataSort={ true } headerAlign='center' dataAlign='center'>Request By</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='ReqTotal' dataSort={ true } headerAlign='center' dataAlign='center'>Total</TableHeaderColumn>
+                                <TableHeaderColumn width='150' dataField='Status' dataSort={ true } headerAlign='center' dataAlign='center'>Status</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTApprove}>Action</TableHeaderColumn>
+                            </BootstrapTable>
+                            <Modal show={show} onHide={handleClose}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Approve Manpower Request</Modal.Title>
                                 </Modal.Header>
@@ -554,205 +555,8 @@ const FormsElements = () => {
                                 </Button>
                                 </Modal.Footer>
                                 </Modal>
-                            </Tab>
-                            <Tab eventKey="Candidate" title={"Candidate Status"}>
-                            <Tabs defaultActiveKey="home">
-                                    <Tab eventKey="home" title="Current candidate">
-                                        <Table responsive hover>
-                                            <thead>
-                                                <tr class="text-center">
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>Department</th>
-                                                    <th>Position</th>
-                                                    <th>Level</th>
-                                                    <th>Resume</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            {datadept1.map(val => (
-                                                <tr class="text-center">
-                                                    <th scope="row" key={val.Id}>{val.Datacnt}</th>
-                                                    <td>{val.Name}</td>
-                                                    <td>{val.Dept}</td>
-                                                    <td>{val.Position}</td>
-                                                    <td>{val.Level}</td>
-                                                    <td><Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Resume</Link></td>
-                                                    <td><Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Reject</Link>
-                                                        <Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Accept</Link>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                            </tbody>
-                                        </Table>
-                                    </Tab>
-                                    <Tab eventKey="Interview1" title="Interview round 1">
-                                        <Table responsive hover>
-                                            <thead>
-                                                <tr class="text-center">
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>Department</th>
-                                                    <th>Position</th>
-                                                    <th>Level</th>
-                                                    <th>Resume</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {datadept2.map(val => (
-                                                <tr class="text-center">
-                                                    <th scope="row" key={val.Id}>{val.Datacnt}</th>
-                                                    <td>{val.Name}</td>
-                                                    <td>{val.Dept}</td>
-                                                    <td>{val.Position}</td>
-                                                    <td>{val.Level}</td>
-                                                    <td><Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Resume</Link></td>
-                                                    <td><Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Reject</Link>
-                                                        <Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Accept</Link>
-                                                    </td>
-                                                </tr>
-                                                ))}
-                                            </tbody>
-                                        </Table>
-                                    </Tab>
-                                    <Tab eventKey="Interview2" title="Interview round 2">
-                                        <Table responsive hover>
-                                            <thead>
-                                                <tr class="text-center">
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>Department</th>
-                                                    <th>Position</th>
-                                                    <th>Level</th>
-                                                    <th>Resume</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            {datadept3.map(val => (
-                                                <tr class="text-center">
-                                                    <th scope="row" key={val.Id}>{val.Datacnt}</th>
-                                                    <td>{val.Name}</td>
-                                                    <td>{val.Dept}</td>
-                                                    <td>{val.Position}</td>
-                                                    <td>{val.Level}</td>
-                                                    <td><Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Resume</Link></td>
-                                                    <td><Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Reject</Link>
-                                                        <Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Accept</Link>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                            </tbody>
-                                        </Table>
-                                    </Tab>
-                                    <Tab eventKey="confirmation" title="Pass confirmation">
-                                        <Table responsive hover>
-                                            <thead>
-                                                <tr class="text-center">
-                                                    <th>#</th>
-                                                    <th>Name</th>
-                                                    <th>Department</th>
-                                                    <th>Position</th>
-                                                    <th>Level</th>
-                                                    <th>Resume</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            {datadept4.map(val => (
-                                                <tr class="text-center">
-                                                    <th scope="row" key={val.Id}>{val.Datacnt}</th>
-                                                    <td>{val.Name}</td>
-                                                    <td>{val.Dept}</td>
-                                                    <td>{val.Position}</td>
-                                                    <td>{val.Level}</td>
-                                                    <td><Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Resume</Link></td>
-                                                    <td><Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary xs">Reject</Link>
-                                                        <Link to={'/manpower/main/dept/'+val.Dept} className="btn btn-primary">Accept</Link>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                            </tbody>
-                                        </Table>
-                                    </Tab>
-                                </Tabs>
-                            </Tab>
-                            <Tab eventKey="Manpower" title="Manpower monitor">
-                                <Row>
-                                <Col md={6}>
-                                    <DepetmanpowerChart/>
-                                </Col>
-                                <Col md={3}>
-                                <Card>
-                                <Card.Header >
-                                    <Card.Title as="h5">Department manpower</Card.Title>
-                                </Card.Header>
-                                    {datasummaryDept.map(val => (
-                                    <Card.Body>
-                                        <Form.Group controlId="exampleForm.ControlInput1">
-                                            <Form.Label><h5>Overall : {val.Overall}</h5></Form.Label>
-                                            <div className="progress">
-                                                <div className="progress-bar progress-c-theme" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val.Overall} aria-valuemin="0" aria-valuemax={val.Overall}/>
-                                            </div>
-                                        </Form.Group>
-                                        <Form.Group controlId="exampleForm.ControlInput1">
-                                            <Form.Label><h5>Actual : {val.Actual}</h5></Form.Label>
-                                            <div className="progress">
-                                                <div className="progress-bar progress-c-theme2" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val.Actual} aria-valuemin="0" aria-valuemax={val.Overall}/>
-                                            </div>
-                                        </Form.Group>
-                                        <Form.Group controlId="exampleForm.ControlInput1">
-                                            <Form.Label><h5>Diff : {val.Actual - val.Overall}</h5></Form.Label>
-                                            <div className="progress">
-                                                <div className="progress-bar progress-c-theme3" role="progressbar" style={{width: '60%', height: '6px'}} aria-valuenow={val.Overall - val.Actual} aria-valuemin="0" aria-valuemax={val.Overall}/>
-                                            </div>
-                                        </Form.Group>
-                                    </Card.Body>
-                                    ))}
-                                    </Card>
-                                </Col>
-                                <Col md={3}>
-                                <Card>
-                                <Card.Header >
-                                    <Card.Title as="h5">Request manpower</Card.Title>
-                                </Card.Header>
-                                    
-                                    <Card.Body> 
-                                    {datasummaryDept.map(val => (
-                                        <Form.Group controlId="exampleForm.ControlInput1">
-                                            <Form.Label><h5>Request : {val.Overall - val.Actual}</h5></Form.Label>
-                                        </Form.Group>
-                                    ))}
-                                        <hr></hr>
-                                    {approveTotal.map(val => (
-                                        <Form.Group controlId="exampleForm.ControlInput1">
-                                            <Form.Label><h5>PD Approve : {val.Total}</h5></Form.Label>
-                                        </Form.Group>
-                                    ))}
-                                    </Card.Body>
-                                    </Card>
-                                </Col>
-                                </Row>
-                                <Row>
-                                <Col>
-                                    <h5>Manpower in department</h5>
-                                    <hr></hr>
-                                    <BootstrapTable data={dataTableUser} striped hover pagination exportCSV search>
-                                        <TableHeaderColumn hidden dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                        <TableHeaderColumn isKey dataField='Code' dataSort={ true } headerAlign='center' dataAlign='center'>Code</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='Start_Work' dataSort={ true } headerAlign='center' dataAlign='center'>Start Work</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='Birthday' dataSort={ true } headerAlign='center' dataAlign='center'>Birthday</TableHeaderColumn>
-                                    </BootstrapTable>
-                                    </Col>
-                                </Row>
-                            </Tab>
-                        </Tabs> 
+                        </Card.Body>
+                    </Card>
                     </Col>
                 </Row>
             </Aux>

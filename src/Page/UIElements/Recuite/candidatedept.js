@@ -215,13 +215,13 @@ const BasicButton = () =>  {
                         </Card.Header>
                         <Card.Body>
                             <BootstrapTable data={dataTablecandidate} options={options} striped hover pagination exportCSV search>
-                                <TableHeaderColumn isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
-                                <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
-                                <TableHeaderColumn dataField='Status_Current' dataSort={ true } headerAlign='center' dataAlign='center'>Current</TableHeaderColumn>
-                                <TableHeaderColumn dataField='Status_Interview1' dataSort={ true } headerAlign='center' dataAlign='center'>Interview 1</TableHeaderColumn>
-                                <TableHeaderColumn dataField='Status_Interview2' dataSort={ true } headerAlign='center' dataAlign='center'>Interview 2</TableHeaderColumn>
-                                <TableHeaderColumn dataField='Status_Pass' dataSort={ true } headerAlign='center' dataAlign='center'>Pass</TableHeaderColumn>
-                                <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
+                                <TableHeaderColumn width='200' isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='Status_Current' dataSort={ true } headerAlign='center' dataAlign='center'>Current</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='Status_Interview1' dataSort={ true } headerAlign='center' dataAlign='center'>Interview 1</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='Status_Interview2' dataSort={ true } headerAlign='center' dataAlign='center'>Interview 2</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='Status_Pass' dataSort={ true } headerAlign='center' dataAlign='center'>Pass</TableHeaderColumn>
+                                <TableHeaderColumn width='100' dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
                             </BootstrapTable>
                         </Card.Body>
                     </Card>

@@ -1,16 +1,19 @@
 import React , {useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import {Row, Col, Card, Table } from 'react-bootstrap';
-
+import {Row, Col, Card, Container } from 'react-bootstrap';
 import Aux from "../../hoc/_Aux";
 import {BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import { ScatterBoxLoader  } from "react-awesome-loaders";
+
 const ID_Token = window.localStorage.getItem("Token");
 
 const Dashboard = () => {
+    const [isLoading , setIsloading] = useState(false);
     const [datasummaryDeptall,setdatasummaryDeptall] = useState([]);
     const [datactualDeptall,setdatactualDeptall] = useState([]);
     const [datarequestall,setdatarequestall] = useState([]);
+    
 
     //Get Data Of Recuitment
     async function getdatasummarydeptall() {
@@ -20,46 +23,65 @@ const Dashboard = () => {
             'Content-Type': 'application/json',
             'authorization': ID_Token
         }
-    })
+        })
         .then(response => response.json()) 
-        .then(data => setdatasummaryDeptall(data))
-        .catch(Error => console.log(Error))
-    }
-
-    //Get Data Of Recuitment
-    async function getdataactualdeptall() {
-        await fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/summary/actual',{
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'authorization': ID_Token
-        }
-    })
-        .then(response => response.json()) 
-        .then(data => setdatactualDeptall(data))
-        .catch(Error => console.log(Error))
-    }
-
-    /// Get Request All
-    async function getrequestall () {
-        await fetch('http://13.250.116.42/node/express/api/pd/getpd/request/waitting',{
+        .then(data => {
+            setdatasummaryDeptall(data);
+            fetch('http://13.250.116.42/node/express/api/department/getdept/manpower/summary/actual',{
             method: 'GET',
-            headers:{
+            headers: {
                 'Content-Type': 'application/json',
                 'authorization': ID_Token
-            }
+            }})
+            .then(response => response.json()) 
+            .then(data => {
+                setdatactualDeptall(data);
+                fetch('http://13.250.116.42/node/express/api/pd/getpd/request/waitting',{
+                    method: 'GET',
+                    headers:{
+                        'Content-Type': 'application/json',
+                        'authorization': ID_Token
+                    }
+                })
+                .then(respones => respones.json())
+                .then(data => {
+                    setdatarequestall(data);
+                    setIsloading(false)
+                })
+                .catch(err => console.log(err))
+            })
+            .catch(Error => console.log(Error))
+
         })
-        .then(respones => respones.json())
-        .then(data => setdatarequestall(data))
-        .catch(err => console.log(err))
+        .catch(Error => console.log(Error))
+
     }
 
     //useEffect
     useEffect(()=> {
+        setIsloading(true)
         getdatasummarydeptall();
-        getdataactualdeptall();
-        getrequestall();
     }, []);
+
+    
+
+    //Loading State
+    if(isLoading){
+        return (
+            <Container>
+                <Row>
+                    <Col md={4}></Col>
+                    <Col md={4}>
+                        <ScatterBoxLoader
+                            primaryColor={"#6366F1"}
+                        />
+                    </Col>
+                    <Col md={4}></Col>
+                </Row>
+            </Container>  
+        )
+    }
+
 
     var dataTableRequest = datarequestall.map(val => (
         {
@@ -225,13 +247,13 @@ const Dashboard = () => {
                             </Card.Header>
                             <Card.Body className='px-0 py-2'>
                                 <BootstrapTable data={dataTableRequest} striped hover pagination search>
-                                    <TableHeaderColumn hidden dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                    <TableHeaderColumn isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='ReqBy' dataSort={ true } headerAlign='center' dataAlign='center'>Request By</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='ReqTotal' dataSort={ true } headerAlign='center' dataAlign='center'>Request Total</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Status' dataSort={ true } headerAlign='center' dataAlign='center'>Status</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' hidden dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn width='200' isKey dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='ReqBy' dataSort={ true } headerAlign='center' dataAlign='center'>Request By</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='ReqTotal' dataSort={ true } headerAlign='center' dataAlign='center'>Total</TableHeaderColumn>
+                                    <TableHeaderColumn width='150' dataField='Status' dataSort={ true } headerAlign='center' dataAlign='center'>Status</TableHeaderColumn>
                                 </BootstrapTable>
                                 
                             </Card.Body>

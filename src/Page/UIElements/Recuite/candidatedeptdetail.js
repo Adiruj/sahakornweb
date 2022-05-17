@@ -332,13 +332,13 @@ const BasicButton = () =>  {
                         <Tabs defaultActiveKey="home">
                             <Tab eventKey="home" title="Current candidate">
                                 <BootstrapTable data={dataTablecurrent} options={options} striped hover pagination exportCSV search>
-                                    <TableHeaderColumn hidden isKey dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                    <TableHeaderColumn hidden dataField='Resume' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' hidden isKey dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn width='100' hidden dataField='Resume' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn width='200' dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
+                                    <TableHeaderColumn width='200' dataField='Department' dataSort={ true } headerAlign='center' dataAlign='center'>Department</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
                                 </BootstrapTable>
                                 <Modal show={show} onHide={handleClose}>
                                 <Modal.Header closeButton>
@@ -404,35 +404,35 @@ const BasicButton = () =>  {
                             </Tab>
                             <Tab eventKey="Interview1" title="Interview 1">
                                 <BootstrapTable data={dataTableinterview1} options={options2} striped hover pagination exportCSV search>
-                                    <TableHeaderColumn hidden isKey dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                    <TableHeaderColumn hidden dataField='Resume' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Dept' dataSort={ true } headerAlign='center' dataAlign='center'>Dept</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' hidden isKey dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn width='100' hidden dataField='Resume' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn width='200' dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
+                                    <TableHeaderColumn width='200' dataField='Dept' dataSort={ true } headerAlign='center' dataAlign='center'>Dept</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
                                 </BootstrapTable>
                             </Tab>
                             <Tab eventKey="Interview2" title="Interview 2">
                                 <BootstrapTable data={dataTableinterview2} options={options3} striped hover pagination exportCSV search>
-                                    <TableHeaderColumn hidden isKey dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                    <TableHeaderColumn hidden dataField='Resume' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Dept' dataSort={ true } headerAlign='center' dataAlign='center'>Dept</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' hidden isKey dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn width='100' hidden dataField='Resume' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn width='200' dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
+                                    <TableHeaderColumn width='200' dataField='Dept' dataSort={ true } headerAlign='center' dataAlign='center'>Dept</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
                                 </BootstrapTable>
                             </Tab>
                             <Tab eventKey="Pass" title="Pass">
                                 <BootstrapTable data={dataTablepass} options={options4} striped hover pagination exportCSV search>
-                                    <TableHeaderColumn hidden isKey dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                    <TableHeaderColumn hidden dataField='Resume' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Dept' dataSort={ true } headerAlign='center' dataAlign='center'>Dept</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' hidden isKey dataField='Id' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn width='100' hidden dataField='Resume' dataSort={ true } headerAlign='center' dataAlign='center'></TableHeaderColumn>
+                                    <TableHeaderColumn width='200' dataField='Name' dataSort={ true } headerAlign='center' dataAlign='center'>Name</TableHeaderColumn>
+                                    <TableHeaderColumn width='200' dataField='Dept' dataSort={ true } headerAlign='center' dataAlign='center'>Dept</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Position' dataSort={ true } headerAlign='center' dataAlign='center'>Position</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Level' dataSort={ true } headerAlign='center' dataAlign='center'>Level</TableHeaderColumn>
+                                    <TableHeaderColumn width='100' dataField='Action' headerAlign='center' dataAlign='center' dataFormat={BTViewdata}>Action</TableHeaderColumn>
                                 </BootstrapTable>
                             </Tab>
                         </Tabs>
